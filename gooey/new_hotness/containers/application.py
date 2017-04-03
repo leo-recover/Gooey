@@ -18,6 +18,7 @@ from gooey.new_hotness.components.config_panel import ConfigPanel
 from gooey.new_hotness.components.console_panel import ConsolePanel
 from gooey.new_hotness.components.footer import Footer
 from gooey.new_hotness.components.general import hline
+from gooey.new_hotness.containers.layouts import StandardFrame
 from gooey.new_hotness.functional import assign
 from gooey.new_hotness.components.header import Header
 from operator import itemgetter
@@ -26,52 +27,43 @@ from pydux.thunk_middleware import thunk_middleware
 from pydux.apply_middleware import apply_middleware
 from pydux.log_middleware import log_middleware
 
+from rx import Observable, Observer
 
 
 class MainWindow(QMainWindow):
 
-    def __init__(self, store, parent=None):
+    def __init__(self, state, parent=None):
         super(MainWindow, self).__init__(parent)
-        self._store = store
-        self._store.subscribe(self.listener)
+        self._state = state
 
-        self.props = store.get_state()['main']
-        self.setWindowTitle(self.props['program_name'])
-        self.resize(
-            self.props['default_size'][0],
-            self.props['default_size'][1]
-        )
+        self.setWindowTitle(self._state['program_name'])
+        self.resize(*self._state['default_size'])
 
-        self.header = Header(store)
-        self.footer = Footer(store)
+        self.header = Header(self)
+        self.footer = Footer(self)
+
         self.configPanel = ConfigPanel(
-            self._store,
+            self._state,
             self.filterRequiredArgs(),
             self.filterOptionalArgs()
         )
 
         self.bodyStack = QStackedWidget()
         self.bodyStack.addWidget(self.configPanel)
-        self.bodyStack.addWidget(ConsolePanel(self._store))
+        self.bodyStack.addWidget(ConsolePanel(self._state))
         # self.bodyStack.setCurrentIndex(1)
 
-        self.setCentralWidget(self.createCentralWiget())
+        self.container = StandardFrame(self.header, self.bodyStack, self.footer)
+        self.setCentralWidget(self.container)
 
-    def createCentralWiget(self):
-        layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(self.header, alignment=Qt.AlignTop, stretch=0)
-        layout.setSpacing(0)
+        # wire all the things
+        self._state.map(itemgetter('title')).subscribe(self.header.setTitle)
+        self._state.map(itemgetter('subtitle')).subscribe(self.header.setSubtitle)
+        self._state.map(itemgetter('icon')).subscribe(self.header.setIcon)
 
-        layout.addWidget(self.bodyStack, stretch=1)
-        layout.setSpacing(0)
 
-        layout.addWidget(self.footer)
-
-        qwidget = QFrame()
-        qwidget.setLayout(layout)
-        qwidget.setFrameShape(QFrame.NoFrame)
-        return qwidget
+    def createWidgetComponents(self, state):
+        return map(self.constructWidget, state['widgets'])
 
     def constructWidget(self, widget):
         import gooey.new_hotness.components.widgets as gooey_widgets
@@ -81,32 +73,31 @@ class MainWindow(QMainWindow):
         if widget['type'] == 'RadioGroup':
             print('Ignoring MultiDirChooser')
             return None
-        return getattr(gooey_widgets, widget['type'])(
-            self._store,
+        w = getattr(gooey_widgets, widget['type'])(
+            self,
             widget['id'],
             widget['data']['display_name'],
             widget['data']['help'],
         )
+        w.value.subscribe(self.handleWidgetUpdate)
+        return w
 
     def filterRequiredArgs(self):
         # todo Required for _which_ subsection
-        widgets = self._store.get_state()['widgets'].values()
+        widgets = self._state['widgets'].values()
         required = filter(lambda x: x['required'], widgets)
         components = map(self.constructWidget, required)
         return filter(None, components)
 
     def filterOptionalArgs(self):
         # todo Required for _which_ subsection
-        widgets = self._store.get_state()['widgets'].values()
+        widgets = self._state['widgets'].values()
         required = filter(lambda x: not x['required'], widgets)
         components = map(self.constructWidget, required)
         return filter(None, components)
 
     def handleWidgetUpdate(self, action):
-        self._state.widgets[action['id']].value = action['value']
-
-    def listener(self):
-        pass
+        self._state['widgets'][action['id']]['value'] = action['value']
 
     def handleStart(self):
         pass

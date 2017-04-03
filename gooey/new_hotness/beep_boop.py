@@ -11,6 +11,7 @@ from pydux import create_store, combine_reducers
 from pydux.apply_middleware import apply_middleware
 from pydux.log_middleware import log_middleware
 from pydux.thunk_middleware import thunk_middleware
+from rx.subjects import Subject
 
 
 def app_reducer(state, action):
@@ -45,6 +46,7 @@ def gooey1to2(buildspec):
     new_buildspec['widgets'] = widget_map
     new_buildspec['title'] = 'Settings'
     new_buildspec['subtitle'] = new_buildspec['program_description']
+    new_buildspec['icon'] = '../images/config_icon.png'
     return new_buildspec
 
 
@@ -54,63 +56,19 @@ def load_initial_state():
         return gooey1to2(data)
 
 
+class StateContainer(Subject):
+    def __init__(self, initialState=None):
+        super(StateContainer, self).__init__()
+        self._state = initialState or {}
 
-def gooey_reducer(state, action):
-    if state is None:
-        return {}
-    elif action['type'] == 'RECEIVED_STATE':
-        return assign({}, state, action['state'])
-    elif action['type'] == 'UPDATE_HEADER_TITLE':
-        return assign({}, state, {'title': action['title']})
-    elif action['type'] == 'UPDATE_HEADER_SUBTITLE':
-        return assign({}, state, {'subtitle': action['subtitle']})
-    else:
-        return state
+    def __getitem__(self, item):
+        return self._state[item]
 
-
-def widget_reducer(state, action):
-    if state == None:
-        return {}
-    elif action['type'] == 'RECEIVED_WIDGET':
-        return assign({}, state, action['widgets'])
-    elif action['type'] == 'UPDATE_WIDGET':
-        print('state:', state)
-        return assign({}, state, {
-            action['id']: assign({}, state[action['id']], {
-                'value': action['value']
-            })
-        })
-    else:
-        return state
+    def __setitem__(self, key, value):
+        self._state[key] = value
+        self.on_next(self._state)
 
 
-
-# need to put buildspec defaults in here before passing down to Form object
-store = create_store(combine_reducers({
-    'main': gooey_reducer,
-    'widgets': widget_reducer
-}), enhancer=apply_middleware(thunk_middleware, log_middleware))
-
-
-state = load_initial_state()
-widgets = state.pop('widgets')
-
-
-store.dispatch({
-    'type': 'RECEIVED_STATE',
-    'state': state
-})
-
-store.dispatch({
-    'type': 'RECEIVED_WIDGET',
-    'widgets': widgets
-})
-
-
-# store.dispatch({
-#     'type': 'UPDATE_HEADER_TITLE',
-#     'title': 'Yo dawg'
-# })
 
 
 sys._excepthook = sys.excepthook
@@ -126,15 +84,20 @@ def my_exception_hook(exctype, value, traceback):
 sys.excepthook = my_exception_hook
 
 
+
+state = StateContainer(load_initial_state())
 # ----------------------------
 # Qt ordering
 # 1. Create QApp
 app = QApplication(sys.argv)
 # 2. initialize all our forum junk
-form = MainWindow(store)
+form = MainWindow(state)
 # 3. Now that the form objects actually exist, dispatch any initial junk that's
 # required
 
+state['title'] = 'Foobar'
+state['title'] = 'Settings'
+state['icon'] = '../images/config_icon.png'
 # store.dispatch({
 #     'type': '@@INIT',
 #     'widgets': widgets

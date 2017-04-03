@@ -30,21 +30,16 @@ class TextContainer(QWidget):
 
     widget_class = None
 
-    def __init__(self, store, _id, label, help_text, *args, **kwargs):
-        super(TextContainer, self).__init__(*args, **kwargs)
-        self._store = store
-        self._store.subscribe(self.receiveChange)
+    def __init__(self, parent, _id, label, help_text, *args, **kwargs):
+        super(TextContainer, self).__init__(parent, *args, **kwargs)
 
         self._id = _id
         self.label = QLabel('<b>{}</b>'.format(label))
         self.help_text = QLabel(help_text)
-        self._widget = self.getWidget()
+        self.widget = self.getWidget()
         self.layout = self.arrange(self.label, self.help_text)
-        self.widget = Subject()
+        self.value = Subject()
         self.connectSignal()
-
-    def getWidget(self):
-        return self.widget_class()
 
     def arrange(self, label, text):
         layout = QVBoxLayout()
@@ -56,10 +51,16 @@ class TextContainer(QWidget):
         layout.addLayout(self.getSublayout())
         return layout
 
+    def getWidget(self,):
+        return self.widget_class(self)
+
     def connectSignal(self):
-        self._widget.textChanged.connect(self.dispatchChange)
+        self.widget.textChanged.connect(self.dispatchChange)
 
     def getSublayout(self, *args, **kwargs):
+        raise NotImplementedError
+
+    def setValue(self, value):
         raise NotImplementedError
 
     def receiveChange(self, *args, **kwargs):
@@ -74,18 +75,21 @@ class TextField(TextContainer):
 
     def getSublayout(self, *args, **kwargs):
         layout = QHBoxLayout()
-        layout.addWidget(self._widget)
+        layout.addWidget(self.widget)
         return layout
 
-    def receiveChange(self):
-        pass
-        # print('self._id:::', self._id)
-        # currentValue = self._store.get_state()['widgets'][self._id]['value']
-        # self._widget.setText(str(currentValue))
+    def setValue(self, value):
+        self.widget.setText(value)
+
+    def connectSignal(self):
+        self.widget.textChanged.connect(self.dispatchChange)
+
+    def foo(self, *args, **kwargs):
+        print(args, kwargs)
 
     def dispatchChange(self, value, **kwargs):
         print('dispatching change for component with ID:', self._id)
-        self.widget.on_next({
+        self.value.on_next({
             'type': 'UPDATE_WIDGET',
             'value': value,
             'id': self._id
@@ -95,7 +99,7 @@ class TextField(TextContainer):
 class PasswordField(TextField):
     def __init__(self, *args, **kwargs):
         super(PasswordField, self).__init__(*args, **kwargs)
-        self._widget.setEchoMode(QLineEdit.Password)
+        self.widget.setEchoMode(QLineEdit.Password)
 
 
 class Textarea(TextField):
@@ -104,14 +108,14 @@ class Textarea(TextField):
     def receiveChange(self):
         currentState = self._store.get_state()['widgets'][self._id]['value']
         print('received_change! current state = ', currentState)
-        if self._widget.toPlainText() != currentState:
-            self._widget.document().setPlainText(currentState)
+        if self.widget.toPlainText() != currentState:
+            self.widget.document().setPlainText(currentState)
 
     def dispatchChange(self, *args, **kwargs):
         print('dispatching change for component with ID:', self._id)
         self.widget.on_next({
             'type': 'UPDATE_WIDGET',
-            'value':  self._widget.toPlainText(),
+            'value':  self.widget.toPlainText(),
             'id': self._id
         })
 
@@ -125,7 +129,7 @@ class Chooser(TextField):
         self.button.clicked.connect(self.spawnDialog)
 
         layout = QHBoxLayout()
-        layout.addWidget(self._widget, stretch=1)
+        layout.addWidget(self.widget, stretch=1)
         layout.addWidget(self.button)
         return layout
 
@@ -138,7 +142,7 @@ class Chooser(TextField):
             )
         result = self.launchDialog(parent=self)
         if result:
-            self.dispatchChange(self.processResult(result))
+            self.setValue(self.processResult(result))
 
     def processResult(self, result):
         return result[0]
@@ -177,24 +181,24 @@ class Dropdown(TextContainer):
 
     def getSublayout(self, *args, **kwargs):
         layout = QHBoxLayout()
-        layout.addWidget(self._widget)
+        layout.addWidget(self.widget)
         return layout
 
     def connectSignal(self):
-        self._widget.currentIndexChanged.connect(self.dispatchChange)
+        self.widget.currentIndexChanged.connect(self.dispatchChange)
 
     def receiveChange(self, *args, **kwargs):
         widget_details = self._store.get_state()['widgets'][self._id]['data']
 
-        if len(widget_details['choices']) != self._widget.count():
-            for _ in range(self._widget.count()):
-                self._widget.removeItem(0)
+        if len(widget_details['choices']) != self.widget.count():
+            for _ in range(self.widget.count()):
+                self.widget.removeItem(0)
             for choice in widget_details['choices']:
-                self._widget.addItem(choice)
+                self.widget.addItem(choice)
 
         currentIndex = self._store.get_state()['widgets'][self._id]['value']
-        if currentIndex and currentIndex != self._widget.currentIndex():
-            self._widget.setCurrentIndex(currentIndex or 0)
+        if currentIndex and currentIndex != self.widget.currentIndex():
+            self.widget.setCurrentIndex(currentIndex or 0)
 
     def dispatchChange(self, value, **kwargs):
         QTimer.singleShot(0, lambda: self._store.dispatch({
@@ -211,33 +215,31 @@ class Counter(Dropdown):
 
 class CheckBox(QWidget):
 
-    def __init__(self, store, _id, label, help_text, *args, **kwargs):
-        super(CheckBox, self).__init__(*args, **kwargs)
-        self._store = store
-        self._store.subscribe(self.receiveChange)
-
-        print(label, help_text, args, kwargs)
-
+    def __init__(self, parent, _id, label, help_text, *args, **kwargs):
+        super(CheckBox, self).__init__(parent, *args, **kwargs)
         self._id = _id
         self.label = QLabel('<b>{}</b>'.format(label))
-        self._widget = QCheckBox(help_text or '')
+        self.widget = QCheckBox(help_text or '')
 
         self.layout = self.arrange()
-
+        self.value = Subject()
         self.connectSignal()
 
     def arrange(self):
         layout = QVBoxLayout()
         layout.addWidget(self.label, alignment=Qt.AlignTop)
-        layout.addWidget(self._widget)
+        layout.addWidget(self.widget)
         return layout
 
 
     def connectSignal(self):
-        self._widget.stateChanged.connect(self.dispatchChange)
+        self.widget.stateChanged.connect(self.dispatchChange)
 
     def receiveChange(self, *args, **kwargs):
         print('TODO: CheckBox receiveChange')
 
     def dispatchChange(self, value, **kwargs):
-        print('TODO: CheckBox dispatchChange')
+        self.value.on_next({
+            'value': self.widget.checkState,
+            'id': self._id
+        })

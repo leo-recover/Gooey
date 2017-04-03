@@ -10,6 +10,15 @@ from operator import itemgetter
 
 
 
+view = {
+    0: {
+        'buttons': ['one', 'two'],
+        'header': {'title': 'asdf', 'subtitle': 'asdf', 'icon': 'asdf'},
+
+    }
+}
+
+
 class Footer(QWidget):
     button_details = [
         {'label': 'Cancel', 'type': 'CANCEL', 'group': 'config'},
@@ -20,10 +29,8 @@ class Footer(QWidget):
         {'label': 'Quit', 'type': 'QUIT', 'group': 'complete'},
     ]
 
-    def __init__(self, store, *args, **kwargs):
-        super(Footer, self).__init__(*args, **kwargs)
-        self._store = store
-        self._store.subscribe(self.receiveChanges)
+    def __init__(self, parent, *args, **kwargs):
+        super(Footer, self).__init__(parent, *args, **kwargs)
 
         self.progressBar = QProgressBar()
         self.progressBar.setMinimum(0)
@@ -35,7 +42,8 @@ class Footer(QWidget):
 
     def createButtonStack(self):
         def dispatch(action, *args, **kwargs):
-            self._store.dispatch({'type': action})
+            pass
+            # self._store.dispatch({'type': action})
 
         buttonStack = QStackedWidget()
         groups = groupby(self.button_details, itemgetter('group'))

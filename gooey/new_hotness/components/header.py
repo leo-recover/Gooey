@@ -8,17 +8,13 @@ from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout
 
 class Header(QFrame):
 
-    def __init__(self, store, *args, **kwargs):
-        super(Header, self).__init__(*args, **kwargs)
-        self._store = store
-        self._store.subscribe(self.renderNextState)
+    def __init__(self, parent, *args, **kwargs):
+        super(Header, self).__init__(parent, *args, **kwargs)
 
-        self.title = QLabel('<b>Settings</b>')
-        self.subtitle = QLabel()
+        self.title = QLabel(self)
+        self.subtitle = QLabel(self)
         self.icon = QPixmap()
-        self.icon.load(os.path.join(os.getcwd(), '../images/config_icon.png'))
-        self.icon = self.icon.scaled(131, 79, QtCore.Qt.KeepAspectRatio)
-
+        self.iconLabel = QLabel(self)
         self.layoutComponent()
 
     def layoutComponent(self):
@@ -26,10 +22,7 @@ class Header(QFrame):
         layout.addLayout(
             self.format_header(self.title, self.subtitle), stretch=1
         )
-
-        label = QLabel()
-        label.setPixmap(self.icon)
-        layout.addWidget(label)
+        layout.addWidget(self.iconLabel)
 
         self.setLayout(layout)
         self.setObjectName('headerSection')
@@ -54,8 +47,13 @@ class Header(QFrame):
         layout.addStretch(1)
         return layout
 
-    def renderNextState(self):
-        nextState = self._store.get_state().get('main')
-        print(nextState)
-        self.title.setText('<b>{}</b>'.format(nextState['title']))
-        self.subtitle.setText(nextState['subtitle'])
+    def setTitle(self, value):
+        self.title.setText('<b>{}</b>'.format(value))
+
+    def setSubtitle(self, value):
+        self.subtitle.setText(value)
+
+    def setIcon(self, iconPath):
+        self.icon.load(os.path.join(os.getcwd(), iconPath))
+        self.icon = self.icon.scaled(131, 79, QtCore.Qt.KeepAspectRatio)
+        self.iconLabel.setPixmap(self.icon)

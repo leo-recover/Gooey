@@ -7,7 +7,7 @@ class ConsolePanel(QWidget):
     def __init__(self, store, *args, **kwargs):
         super(ConsolePanel, self).__init__(*args, **kwargs)
         self._store = store
-        self._store.subscribe(self.receiveChanges)
+        # self._store.subscribe(self.receiveChanges)
         self.widget = QTextEdit()
         self.widget.setReadOnly(True)
         self.layoutComponent()
