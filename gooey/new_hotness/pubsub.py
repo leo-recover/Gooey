@@ -24,34 +24,3 @@ pub.subscribe('bark', lambda action: print('b4', action))
 
 pub.dispatch('bark', {'type': 'RUFF'})
 
-'''
-function navigateTo(item) {
-
-    var mainTab = item.toLowerCase();
-    var main_navbar = $('ul[data-qa="main-navbar"]');
-    var mainTabToClick;
-
-    switch (mainTab) {
-        case 'search':
-            mainTabToClick = main_navbar.$$('li').get(0);
-            break;
-        case 'upload':
-            mainTabToClick = main_navbar.$$('li').get(1);
-            break;
-        case 'feeds':
-            mainTabToClick = main_navbar.$$('li').get(2);
-            break;
-        case 'trust':
-            mainTabToClick = main_navbar.$$('li').get(3);
-            break;
-        case 'admin':
-            mainTabToClick = main_navbar.$$('li').get(4);
-            break;
-        case 'getting started':
-            mainTabToClick = main_navbar.$$('li').get(5);
-            break;
-    }
-
-    mainTabToClick.click();
-}
-'''
