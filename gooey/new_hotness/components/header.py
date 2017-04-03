@@ -19,9 +19,7 @@ class Header(QFrame):
 
     def layoutComponent(self):
         layout = QHBoxLayout()
-        layout.addLayout(
-            self.format_header(self.title, self.subtitle), stretch=1
-        )
+        layout.addLayout(self.format_header(self.title, self.subtitle), stretch=1)
         layout.addWidget(self.iconLabel)
 
         self.setLayout(layout)
@@ -30,14 +28,6 @@ class Header(QFrame):
         self.setMinimumWidth(130)
         self.setFrameShape(QFrame.NoFrame)
         self.setLineWidth(0)
-        # TODO fix styles
-        self.setStyleSheet('''
-            QFrame#headerSection {
-                background: white; margin: 0;
-                padding: 0;
-                border-top: 1px solid #cacaca;
-            }
-        ''')
 
     def format_header(self, title, subtitle):
         layout = QVBoxLayout()

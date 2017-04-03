@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
 
         self.bodyStack = QStackedWidget()
         self.bodyStack.addWidget(self.configPanel)
-        self.bodyStack.addWidget(ConsolePanel(self._state))
+        self.bodyStack.addWidget(ConsolePanel(self))
         # self.bodyStack.setCurrentIndex(1)
 
         self.container = StandardFrame(self.header, self.bodyStack, self.footer)
@@ -70,7 +70,6 @@ class MainWindow(QMainWindow):
         self.footer.buttons.filter(forType('CLOSE')).subscribe(self.handleStop)
         self.footer.buttons.filter(forType('STOP')).subscribe(self.handleClose)
         self.footer.buttons.filter(forType('RESTART')).subscribe(self.handleRestart)
-        self.footer.buttons.subscribe(print)
 
 
     def createWidgetComponents(self, state):

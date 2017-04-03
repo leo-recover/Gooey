@@ -71,9 +71,4 @@ class Footer(QWidget):
         self.setMinimumHeight(60)
         self.setMaximumHeight(60)
 
-    def receiveChanges(self):
-        # swap button stack depending on state
-        # hide/show progressbar
-        # other
-        pass
 
