@@ -1,5 +1,6 @@
 import json
 import sys
+from collections import OrderedDict
 from uuid import uuid4
 
 from PyQt5.QtWidgets import QApplication
@@ -40,7 +41,7 @@ def gooey1to2(buildspec):
             new_widget['id'] = str(uuid4())
             widgets.append(new_widget)
 
-    widget_map = {widget['id']: widget for widget in widgets}
+    widget_map = OrderedDict((widget['id'], widget) for widget in widgets)
     new_buildspec = deepcopy(buildspec)
     new_buildspec['root_commands'] = root_commands
     new_buildspec['widgets'] = widget_map

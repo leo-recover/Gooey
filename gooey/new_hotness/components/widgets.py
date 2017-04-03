@@ -30,12 +30,12 @@ class TextContainer(QWidget):
 
     widget_class = None
 
-    def __init__(self, parent, _id, label, help_text, *args, **kwargs):
+    def __init__(self, parent, widgetInfo, *args, **kwargs):
         super(TextContainer, self).__init__(parent, *args, **kwargs)
 
-        self._id = _id
-        self.label = QLabel('<b>{}</b>'.format(label))
-        self.help_text = QLabel(help_text)
+        self._id = widgetInfo['id']
+        self.label = QLabel('<b>{}</b>'.format(widgetInfo['data']['display_name']))
+        self.help_text = QLabel(widgetInfo['data']['help'])
         self.widget = self.getWidget()
         self.layout = self.arrange(self.label, self.help_text)
         self.value = Subject()
@@ -179,6 +179,16 @@ class DirectoryChooser(Chooser):
 class Dropdown(TextContainer):
     widget_class = QComboBox
 
+    def __init__(self, parent, widgetInfo, *args, **kwargs):
+        super(Dropdown, self).__init__(parent, widgetInfo, *args, **kwargs)
+
+        # initialize dropdown values
+        for choice in widgetInfo['data']['choices']:
+            self.widget.addItem(choice)
+
+        if widgetInfo['data']['default']:
+            self.setValue(widgetInfo['data']['default'])
+
     def getSublayout(self, *args, **kwargs):
         layout = QHBoxLayout()
         layout.addWidget(self.widget)
@@ -187,26 +197,12 @@ class Dropdown(TextContainer):
     def connectSignal(self):
         self.widget.currentIndexChanged.connect(self.dispatchChange)
 
-    def receiveChange(self, *args, **kwargs):
-        widget_details = self._store.get_state()['widgets'][self._id]['data']
-
-        if len(widget_details['choices']) != self.widget.count():
-            for _ in range(self.widget.count()):
-                self.widget.removeItem(0)
-            for choice in widget_details['choices']:
-                self.widget.addItem(choice)
-
-        currentIndex = self._store.get_state()['widgets'][self._id]['value']
-        if currentIndex and currentIndex != self.widget.currentIndex():
-            self.widget.setCurrentIndex(currentIndex or 0)
+    def setValue(self, value):
+        self.widget.setCurrentIndex(value)
 
     def dispatchChange(self, value, **kwargs):
-        QTimer.singleShot(0, lambda: self._store.dispatch({
-            'type': 'UPDATE_WIDGET',
-            'value': value,
-            'id': self._id,
-            'updateId': uuid4()
-        }))
+        self.value.on_next({'value': value, 'id': self._id})
+        # QTimer.singleShot(0, lambda: self._store.dispatch({})
 
 
 class Counter(Dropdown):
@@ -215,15 +211,18 @@ class Counter(Dropdown):
 
 class CheckBox(QWidget):
 
-    def __init__(self, parent, _id, label, help_text, *args, **kwargs):
+    def __init__(self, parent, widgetInfo, *args, **kwargs):
         super(CheckBox, self).__init__(parent, *args, **kwargs)
-        self._id = _id
-        self.label = QLabel('<b>{}</b>'.format(label))
-        self.widget = QCheckBox(help_text or '')
+        self._id = widgetInfo['id']
+        self.label = QLabel('<b>{}</b>'.format(widgetInfo['data']['display_name']))
+        self.widget = QCheckBox(widgetInfo['data']['help'] or '')
 
         self.layout = self.arrange()
         self.value = Subject()
         self.connectSignal()
+
+        if widgetInfo['data']['default']:
+            self.setValue(widgetInfo['data']['default'])
 
     def arrange(self):
         layout = QVBoxLayout()
@@ -231,12 +230,11 @@ class CheckBox(QWidget):
         layout.addWidget(self.widget)
         return layout
 
-
     def connectSignal(self):
         self.widget.stateChanged.connect(self.dispatchChange)
 
-    def receiveChange(self, *args, **kwargs):
-        print('TODO: CheckBox receiveChange')
+    def setValue(self, value):
+        self.widget.setChecked(value)
 
     def dispatchChange(self, value, **kwargs):
         self.value.on_next({

@@ -7,8 +7,8 @@ from PyQt5.QtWidgets import QWidget
 
 from functools import partial
 from operator import itemgetter
-
-
+from rx.subjects import BehaviorSubject
+from rx.subjects.subject import Subject
 
 view = {
     0: {
@@ -21,7 +21,7 @@ view = {
 
 class Footer(QWidget):
     button_details = [
-        {'label': 'Cancel', 'type': 'CANCEL', 'group': 'config'},
+        {'label': 'Cancel', 'type': 'CLOSE', 'group': 'config'},
         {'label': 'Start', 'type': 'START', 'group': 'config'},
         {'label': 'Stop', 'type': 'STOP', 'group': 'running'},
         {'label': 'Edit', 'type': 'EDIT', 'group': 'complete'},
@@ -31,6 +31,7 @@ class Footer(QWidget):
 
     def __init__(self, parent, *args, **kwargs):
         super(Footer, self).__init__(parent, *args, **kwargs)
+        self.buttons = Subject()
 
         self.progressBar = QProgressBar()
         self.progressBar.setMinimum(0)
@@ -41,9 +42,8 @@ class Footer(QWidget):
         self.layoutComponent()
 
     def createButtonStack(self):
-        def dispatch(action, *args, **kwargs):
-            pass
-            # self._store.dispatch({'type': action})
+        def dispatch(action):
+            self.buttons.on_next({'type': action})
 
         buttonStack = QStackedWidget()
         groups = groupby(self.button_details, itemgetter('group'))
