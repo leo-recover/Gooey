@@ -119,7 +119,7 @@ class MainWindow(QMainWindow):
         pub.subscribe(self.on_new_message, 'console_update')
         pub.subscribe(self.on_progress_change, 'progress_update')
         pub.subscribe(self.on_client_done, 'execution_complete')
-        # self.bodyStack.setCurrentIndex(1)
+        self.bodyStack.setCurrentIndex(1)
 
         self.client_runner.run(command)
 
@@ -144,66 +144,5 @@ class MainWindow(QMainWindow):
     def handleRestart(self):
         pass
 
-    def getCleanValue(self, widget):
 
-        if widget['type'] == 'CheckBox':
-            return widget['commands'][0] if widget['value'] else None
-
-        # if self.type == 'RadioGroup':
-        #     try:
-        #         return self.commands[self._value.index(True)][0]
-        #     except ValueError:
-        #         return None
-        #
-        # if self.type == 'MultiFileChooser':
-        #     value = ' '.join(quote(x) for x in self._value.split(os.pathsep) if x)
-        #     if self.commands and value:
-        #         return u'{} {}'.format(self.commands[0], value)
-        #     return value or None
-
-        if widget['type'] == 'Textarea':
-            if widget['commands'] and widget['value']:
-                return '{} {}'.format(widget['commands'][0], quote(widget['value'].encode('unicode_escape')))
-            else:
-                return quote(widget['value'].encode('unicode_escape')) if widget['value'] else ''
-        if widget['type'] == 'CommandField':
-            if widget['commands'] and widget['value']:
-                return u'{} {}'.format(widget['commands'][0], widget['value'])
-            else:
-                return widget['value'] or None
-
-        if widget['type'] == 'Counter':
-            '''
-            Returns
-              str(option_string * DropDown Value)
-              e.g.
-              -vvvvv
-            '''
-            if not str(widget['value']).isdigit():
-                return None
-            arg = str(widget['commands'][0]).replace('-', '')
-            repeated_args = arg * int(widget['value'])
-            return '-' + repeated_args
-
-        if widget['type'] == 'Dropdown':
-            if widget['value'] == 'Select Option':
-                return None
-            elif widget['commands'] and widget['value']:
-                return u'{} {}'.format(widget['commands'][0], quote(widget['value']))
-            else:
-                return quote(widget['value']) if widget['value'] else ''
-        else:
-            if widget['commands'] and widget['value']:
-                if not widget['data']['nargs']:
-                    v = quote(widget['value'])
-                else:
-                    v = widget['value']
-                return u'{0} {1}'.format(widget['commands'][0], v)
-            else:
-                if not widget['value']:
-                    return None
-                elif not widget['data']['nargs']:
-                    return quote(widget['value'])
-                else:
-                    return widget['value']
 
