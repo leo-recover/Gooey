@@ -5,7 +5,7 @@
   "target": "'/Users/ckiehl/Documents/Gooey/venv/bin/python' -u '/Users/ckiehl/Documents/Gooey/gooey/examples/demo.py'",
   "num_optional_cols": 2,
   "widgets": {
-    "primary": {
+    "Option #1": {
       "command": null,
       "contents": [
         {
@@ -255,6 +255,23 @@
           ],
           "group_name": "Choose Option",
           "type": "RadioGroup"
+        }
+      ]
+    },
+    "Option #2": {
+      "command": null,
+      "contents": [
+        {
+          "data": {
+            "default": null,
+            "help": "Name of the file you want to process",
+            "nargs": "",
+            "display_name": "FileChooser",
+            "commands": [],
+            "choices": []
+          },
+          "required": true,
+          "type": "FileChooser"
         }
       ]
     }
