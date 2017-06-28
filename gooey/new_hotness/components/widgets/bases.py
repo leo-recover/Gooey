@@ -30,6 +30,9 @@ class BaseWidget(QWidget):
     def dispatchChange(self, value, **kwargs):
         raise NotImplementedError
 
+    def formatOutput(self, metatdata, value):
+        raise NotImplementedError
+
 
 class TextContainer(BaseWidget):
     widget_class = None
@@ -38,6 +41,7 @@ class TextContainer(BaseWidget):
         super(TextContainer, self).__init__(parent, *args, **kwargs)
 
         self._id = widgetInfo['id']
+        self._meta = widgetInfo['data']
         self.label = QLabel('<b>{}</b>'.format(widgetInfo['data']['display_name']))
         self.help_text = QLabel(widgetInfo['data']['help'])
         self.widget = self.getWidget()
@@ -67,10 +71,13 @@ class TextContainer(BaseWidget):
     def setValue(self, value):
         raise NotImplementedError
 
-    def receiveChange(self, *args, **kwargs):
+    def receiveChange(self, metatdata, value):
         raise NotImplementedError
 
     def dispatchChange(self, value, **kwargs):
+        raise NotImplementedError
+
+    def formatOutput(self, metadata, value):
         raise NotImplementedError
 
 

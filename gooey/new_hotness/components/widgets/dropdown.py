@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtWidgets import QHBoxLayout
 
 from gooey.new_hotness.components.widgets.bases import TextContainer
-
+from gooey.new_hotness import formatters
 
 class Dropdown(TextContainer):
     widget_class = QComboBox
@@ -29,5 +29,11 @@ class Dropdown(TextContainer):
         self.widget.setCurrentIndex(value)
 
     def dispatchChange(self, value, **kwargs):
-        self.value.on_next({'value': value, 'id': self._id})
-        # QTimer.singleShot(0, lambda: self._store.dispatch({})
+        self.value.on_next({
+            'id': self._id,
+            'cmd': self.formatOutput(self._meta, self.widget.currentText()),
+            'value': value,
+        })
+
+    def formatOutput(self, metadata, value):
+        return formatters.dropdown(metadata, value)

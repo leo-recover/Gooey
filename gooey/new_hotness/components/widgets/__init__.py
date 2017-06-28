@@ -10,3 +10,18 @@ from .datechooser import DateChooser
 from .counter import Counter
 from .checkbox import CheckBox
 from .filesaver import FileSaver
+
+
+WIDGET_TYPES = (
+    'TextField',
+    'Textarea',
+    'PasswordField',
+    'MultiFileChooser',
+    'FileChooser',
+    'Dropdown',
+    'DirectoryChooser',
+    'DateChooser',
+    'Counter',
+    'CheckBox',
+    'FileSaver',
+)

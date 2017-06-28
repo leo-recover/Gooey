@@ -1,6 +1,6 @@
 from operator import itemgetter
 
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QPushButton
 from PyQt5.QtWidgets import QStackedWidget
 
 import gooey.new_hotness.components.widgets as gooey_widgets
@@ -9,15 +9,19 @@ from gooey.new_hotness.components.console_panel import ConsolePanel
 from gooey.new_hotness.components.footer import Footer
 from gooey.new_hotness.components.header import Header
 from gooey.new_hotness.containers.layouts import StockLayout, SplitLayout
+from new_hotness.commandline import build_cmd_str
 from new_hotness.components.sidebar import Sidebar
 from new_hotness.util import isRequired, isOptional, belongsTo, flatten, forEvent
 
-
+from gooey.gui.processor import ProcessController
 
 class MainWindow(QMainWindow):
 
     def __init__(self, state, parent=None):
         super(MainWindow, self).__init__(parent)
+
+        self.clientRunner = ProcessController('', '')
+
         self._state = state
 
         self.setWindowTitle(self._state['program_name'])
@@ -37,9 +41,11 @@ class MainWindow(QMainWindow):
             self.configPanels
         )
 
+        self.console = ConsolePanel(self)
+
         self.bodyStack = QStackedWidget(self)
         self.bodyStack.addWidget(self.configScreen)
-        self.bodyStack.addWidget(ConsolePanel(self))
+        self.bodyStack.addWidget(self.console)
 
         self.container = StockLayout(self.header, self.bodyStack, self.footer)
         self.setCentralWidget(self.container)
@@ -96,28 +102,60 @@ class MainWindow(QMainWindow):
 
     def handleWidgetUpdate(self, action):
         print("Yo", action)
-        self._state['widgets'][action['id']]['value'] = action['value']
+        self._state['widgets'][action['id']]['cmd'] = action['cmd']
 
 
     def handleStart(self, action):
-        group = self._state['activeGroup']
-        widgets = filter(belongsTo(group), self._state['widgets'].values())
-        required = list(filter(lambda x: x['required'], widgets))
-        print(len(required))
-        allGood = all(x.get('value') for x in required)
-        if not allGood:
-            print("Oh FUCK no, son!")
-            print([(x['data']['display_name'], x.get('value')) for x in required])
+        activeGroup = self._state['activeGroup']
+        activeWidgets = list(filter(belongsTo(activeGroup), self._state['widgets'].values()))
+        if not self.hasRequiredArgs(activeWidgets):
+            self.launchDialog(
+                "Required Arguments",
+                "Please supply values for all required arguments "
+            )
 
-        # command = self.model.build_command_line_string()
-        # self.client_runner.run(command)
-        # # console statuses from the other thread
+        command = build_cmd_str(
+            self._state,
+            list(filter(belongsTo(activeGroup),
+            self._state['widgets'].values()))
+        )
+
+        self.clientRunner.run(command)
+        self.clientRunner.subject.subscribe(self.doThing)
+
+        # console statuses from the other thread
         # pub.subscribe(self.on_new_message, 'console_update')
         # pub.subscribe(self.on_progress_change, 'progress_update')
         # pub.subscribe(self.on_client_done, 'execution_complete')
-        # self.bodyStack.setCurrentIndex(1)
-        #
+        self.bodyStack.setCurrentIndex(1)
+
         # self.client_runner.run(command)
+
+
+    def doThing(self, event):
+        print(event)
+        try:
+            self.console.widget.append(event.get('console_update').decode('utf-8'))
+            c = self.console.widget.textCursor()
+            c.movePosition(c.End)
+            self.console.widget.setTextCursor(c)
+        except Exception as e:
+            print(e)
+
+    def hasRequiredArgs(self, widgets):
+        # todo: basic type validation (e.g. 'must be number')
+        required = list(filter(isRequired, widgets))
+        for i in required:
+            print(i['type'], i.get('cmd'))
+        return all(x.get('cmd') for x in required)
+        # allGood = all(x.get('value') for x in required)
+        # if not allGood:
+        #     print("Oh FUCK no, son!")
+        #     print([(x['data']['display_name'], x.get('value'))
+        #            for x in required
+        #            if not x['value']])
+
+
 
 
     def build_command_line_string(self):
@@ -144,4 +182,8 @@ class MainWindow(QMainWindow):
         pass
 
 
+    def launchDialog(self, title, body):
+        # QWidget, p_str, p_str_1, buttons, QMessageBox_StandardButtons=None, QMessageBox_StandardButton=None,
+        QMessageBox.warning(self,
+                            title, body, QMessageBox.Ok, QMessageBox.NoButton)
 

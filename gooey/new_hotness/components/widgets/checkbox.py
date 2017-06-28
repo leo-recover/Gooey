@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QVBoxLayout
 
 from gooey.new_hotness.components.widgets.bases import BaseWidget
+from gooey.new_hotness import formatters
 from rx.subjects import Subject
 
 
@@ -13,6 +14,7 @@ class CheckBox(BaseWidget):
     def __init__(self, parent, widgetInfo, *args, **kwargs):
         super(CheckBox, self).__init__(parent, *args, **kwargs)
         self._id = widgetInfo['id']
+        self._meta = widgetInfo['data']
         self.label = QLabel('<b>{}</b>'.format(widgetInfo['data']['display_name']))
         self.widget = QCheckBox(widgetInfo['data']['help'] or '')
 
@@ -37,6 +39,10 @@ class CheckBox(BaseWidget):
 
     def dispatchChange(self, value, **kwargs):
         self.value.on_next({
-            'value': self.widget.checkState,
-            'id': self._id
+            'id': self._id,
+            'cmd': self.formatOutput(self._meta, self.widget.checkState()),
+            'rawValue': self.widget.checkState(),
         })
+
+    def formatOutput(self, metatdata, value):
+        return formatters.checkbox(metatdata, value)

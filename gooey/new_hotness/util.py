@@ -23,6 +23,14 @@ def isOptional(widget):
     return not isRequired(widget)
 
 
+def isRequiredPositional(widget):
+    return isRequired(widget) and widget['data']['commands']
+
+
+def isRequiredNonPositional(widget):
+    return isRequired(widget) and not widget['data']['commands']
+
+
 @simpleCurry
 def belongsTo(parent, widget):
     return widget['parent'] == parent

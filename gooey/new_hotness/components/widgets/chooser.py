@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QPushButton
 
 from gooey.new_hotness.components.widgets.textfield import TextField
+from gooey.new_hotness import formatters
+
 
 # TODO: unify all of the return types Qt throws out
 # TODO: of the various Dialogs
@@ -32,3 +34,7 @@ class Chooser(TextField):
 
     def processResult(self, result):
         return result[0]
+
+
+    def formatOutput(self, metatdata, value):
+        return formatters.general(metatdata, value)

@@ -10,4 +10,8 @@ class Textarea(TextField):
         self.value.document().setPlainText(value)
 
     def dispatchChange(self, *args, **kwargs):
-        self.value.on_next({'value':  self.widget.toPlainText(), 'id': self._id})
+        self.value.on_next({
+            'id': self._id,
+            'cmd': self.formatOutput(self._meta, self.widget.toPlainText()),
+            'value':  self.widget.toPlainText(),
+        })

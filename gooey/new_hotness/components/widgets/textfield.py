@@ -1,7 +1,9 @@
+
 from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLineEdit
 
 from gooey.new_hotness.components.widgets.bases import TextContainer
+from gooey.new_hotness import formatters
 
 
 class TextField(TextContainer):
@@ -19,4 +21,12 @@ class TextField(TextContainer):
         self.widget.textChanged.connect(self.dispatchChange)
 
     def dispatchChange(self, value, **kwargs):
-        self.value.on_next({'value': value, 'id': self._id})
+        self.value.on_next({
+            'id': self._id,
+            'cmd': self.formatOutput(self._meta, value),
+            'rawValue': value
+        })
+
+    def formatOutput(self, metatdata, value):
+        return formatters.general(metatdata, value)
+

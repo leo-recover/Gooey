@@ -7,6 +7,8 @@ from multiprocessing.dummy import Pool
 
 import sys
 
+from rx.subjects.subject import Subject
+
 from gooey.gui.pubsub import pub
 from gooey.gui.util.casting import safe_float
 from gooey.gui.util.functional import unit, bind
@@ -15,6 +17,7 @@ from gooey.gui.util.taskkill import taskkill
 
 class ProcessController(object):
     def __init__(self, progress_regex, progress_expr):
+        self.subject = Subject()
         self._process = None
         self.progress_regex = progress_regex
         self.progress_expr = progress_expr
@@ -36,10 +39,12 @@ class ProcessController(object):
         return self._process and self.poll() is None
 
     def run(self, command):
+        print(type(command))
+        print(command)
         env = os.environ.copy()
         env["GOOEY"] = "1"
         self._process = subprocess.Popen(
-            command.encode(sys.getfilesystemencoding()),
+            command,
             bufsize=1, stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT, shell=True, env=env)
         Pool(1).apply_async(self._forward_stdout, (self._process,))
@@ -53,9 +58,14 @@ class ProcessController(object):
             line = process.stdout.readline()
             if not line:
                 break
-            pub.send_message('console_update', msg=line)
-            pub.send_message('progress_update', progress=self._extract_progress(line))
-        pub.send_message('execution_complete')
+            self.subject.on_next({
+                'console_update': line,
+                'progress_update': self._extract_progress(line)
+            })
+            # pub.send_message('console_update', msg=line)
+            # pub.send_message('progress_update', progress=self._extract_progress(line))
+        self.subject.on_completed()
+        # pub.send_message('execution_complete')
 
     def _extract_progress(self, text):
         '''

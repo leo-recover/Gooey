@@ -1,40 +1,41 @@
 import os
+
 from gooey.gui.util.quoting import quote
 
 
-def cleanCheckbox(widget):
-    return widget['commands'][0] if widget['value'] else None
+def formatCheckbox(widget):
+    return widget._meta['commands'][0] if widget['value'] else None
 
 
-def cleanRadioGroup(widget):
+def RadioGroup(widget):
     try:
         return self.commands[self._value.index(True)][0]
     except ValueError:
         return None
 
 
-def cleanMultiFileChooser(widget):
+def MultiFileChooser(widget):
     value = ' '.join(quote(x) for x in widget['value'].split(os.pathsep) if x)
     if widget['commands'] and value:
         return u'{} {}'.format(widget['commands'][0], value)
     return value or None
 
 
-def cleanTextArea(widget):
+def TextArea(widget):
     if widget['commands'] and widget['value']:
         return '{} {}'.format(widget['commands'][0], quote(widget['value'].encode('unicode_escape')))
     else:
         return quote(widget['value'].encode('unicode_escape')) if widget['value'] else ''
 
 
-def cleanCommandField(widget):
+def CommandField(widget):
     if widget['commands'] and widget['value']:
         return u'{} {}'.format(widget['commands'][0], widget['value'])
     else:
         return widget['value'] or None
 
 
-def cleanCounter(widget):
+def Counter(widget):
     '''
     Returns
       str(option_string * DropDown Value)
@@ -48,7 +49,7 @@ def cleanCounter(widget):
     return '-' + repeated_args
 
 
-def cleanDropdown(widget):
+def Dropdown(widget):
     if widget['value'] == 'Select Option':
         return None
     elif widget['commands'] and widget['value']:
@@ -57,7 +58,7 @@ def cleanDropdown(widget):
         return quote(widget['value']) if widget['value'] else ''
 
 
-def cleanGeneral(widget):
+def General(widget):
     if widget['commands'] and widget['value']:
         if not widget['data']['nargs']:
             v = quote(widget['value'])
@@ -71,4 +72,6 @@ def cleanGeneral(widget):
             return quote(widget['value'])
         else:
             return widget['value']
+
+
 

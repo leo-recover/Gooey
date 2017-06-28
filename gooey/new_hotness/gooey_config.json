@@ -2,7 +2,7 @@
   "language_dir": "/Users/ckiehl/Documents/Gooey/gooey/languages",
   "auto_start": false,
   "progress_expr": null,
-  "target": "'/Users/ckiehl/Documents/Gooey/venv/bin/python' -u '/Users/ckiehl/Documents/Gooey/gooey/examples/demo.py'",
+  "target": "\"F:/Dropbox/pretty_gui/Gooey/venv/Scripts/python.exe\" -u \"F:/Dropbox/pretty_gui/Gooey/gooey/new_hotness/cool_program.py\"",
   "num_optional_cols": 2,
   "widgets": {
     "Option #1": {
@@ -286,7 +286,7 @@
   "group_by_type": true,
   "num_required_cols": 2,
   "language": "english",
-  "monospace_display": false,
+  "monospace_display": true,
   "disable_stop_button": false,
   "program_description": "Example application to show Gooey's various widgets",
   "default_size": [
