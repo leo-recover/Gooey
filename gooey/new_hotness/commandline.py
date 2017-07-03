@@ -27,7 +27,7 @@ def finalize_command(state, positional, required, optional):
         positional.insert(0, "--")
     cmd_string = ' '.join(filter(None, chain(required, optional, positional)))
 
-    if len(state['groups']) == 1:
+    if len(state['groups']) > 1:
         cmd_string = u'{} {}'.format(state['activeGroup']['command'], cmd_string)
 
     return u'{} --ignore-gooey {}'.format(state['target'], cmd_string)

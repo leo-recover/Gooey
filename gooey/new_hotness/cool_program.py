@@ -47,3 +47,5 @@ managed to put it into one of the cupboards as she fell past it.
 for i in out.split('\n'):
     print(i)
     time.sleep(.05)
+
+# raise Exception('AW SHIT BRUH')

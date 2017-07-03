@@ -1,13 +1,11 @@
+from functools import partial
 from itertools import groupby
+from operator import itemgetter
 
 from PyQt5.QtWidgets import QHBoxLayout, \
     QStackedWidget, QProgressBar
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QWidget
-
-from functools import partial
-from operator import itemgetter
-from rx.subjects import BehaviorSubject
 from rx.subjects.subject import Subject
 
 view = {
@@ -28,6 +26,12 @@ class Footer(QWidget):
         {'label': 'Restart', 'type': 'RESTART', 'group': 'complete'},
         {'label': 'Quit', 'type': 'QUIT', 'group': 'complete'},
     ]
+
+    groups = {
+        'config': 0,
+        'running': 1,
+        'complete': 2
+    }
 
     def __init__(self, parent, *args, **kwargs):
         super(Footer, self).__init__(parent, *args, **kwargs)
@@ -71,4 +75,5 @@ class Footer(QWidget):
         self.setMinimumHeight(60)
         self.setMaximumHeight(60)
 
-
+    def setVisibleGroup(self, group):
+        self.buttonStack.setCurrentIndex(group)

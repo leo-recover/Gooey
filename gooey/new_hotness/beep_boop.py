@@ -47,12 +47,20 @@ def gooey1to2(buildspec):
 
     widget_map = OrderedDict((widget['id'], widget) for widget in widgets)
     new_buildspec = deepcopy(buildspec)
+    new_buildspec['view'] = 'configuration'
     new_buildspec['activeGroup'] = list(root_commands.keys())[0]
     new_buildspec['groups'] = root_commands
     new_buildspec['widgets'] = widget_map
     new_buildspec['title'] = 'Settings'
     new_buildspec['subtitle'] = new_buildspec['program_description']
     new_buildspec['icon'] = '../images/config_icon.png'
+    new_buildspec['gooey_state'] = {
+        'icon': '../images/config_icon.png',
+        'title': 'Settings',
+        'subtitle': new_buildspec['program_description'],
+        'window': 0,
+        'buttonGroup': 0
+    }
     return new_buildspec
 
 

@@ -33,6 +33,7 @@ class SplitLayout(QWidget):
     def __init__(self, parent, left, right, size=200):
         super(SplitLayout, self).__init__(parent)
         self.left = self.withMaxSize(left, size)
+        self.line = line(self, QFrame.VLine)
         self.right = right
         self.layoutComponent()
 
@@ -40,7 +41,7 @@ class SplitLayout(QWidget):
     def layoutComponent(self):
         layout = QHBoxLayout()
         layout.addWidget(self.left, 0)
-        layout.addWidget(line(self, QFrame.VLine))
+        layout.addWidget(self.line)
         layout.addWidget(self.right, 1)
         self.setLayout(layout)
 
@@ -56,4 +57,8 @@ class SplitLayout(QWidget):
         layout.addWidget(widget)
         wrapped.setLayout(layout)
         return wrapped
+
+    def hideLeft(self):
+        self.left.setVisible(False)
+        self.line.setVisible(False)
 

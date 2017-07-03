@@ -257,23 +257,6 @@
           "type": "RadioGroup"
         }
       ]
-    },
-    "Option #2": {
-      "command": null,
-      "contents": [
-        {
-          "data": {
-            "default": null,
-            "help": "Name of the file you want to process",
-            "nargs": "",
-            "display_name": "FileChooser",
-            "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "FileChooser"
-        }
-      ]
     }
   },
   "disable_progress_bar_animation": false,

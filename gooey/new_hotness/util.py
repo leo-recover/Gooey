@@ -1,5 +1,5 @@
 from inspect import signature
-from functools import partial
+from functools import partial, reduce
 from itertools import zip_longest
 
 
@@ -60,5 +60,6 @@ def chunk(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
     return zip_longest(fillvalue=fillvalue, *args)
 
-
-
+@simpleCurry
+def nestedget(path, obj):
+    return reduce(lambda acc, val: acc.get(val, {}), path, obj)

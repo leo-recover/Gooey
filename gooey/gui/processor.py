@@ -64,7 +64,10 @@ class ProcessController(object):
             })
             # pub.send_message('console_update', msg=line)
             # pub.send_message('progress_update', progress=self._extract_progress(line))
-        self.subject.on_completed()
+
+        self.subject.on_next({
+            'completed': True
+        })
         # pub.send_message('execution_complete')
 
     def _extract_progress(self, text):
