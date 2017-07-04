@@ -8,30 +8,11 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QWidget
 from rx.subjects.subject import Subject
 
-view = {
-    0: {
-        'buttons': ['one', 'two'],
-        'header': {'title': 'asdf', 'subtitle': 'asdf', 'icon': 'asdf'},
+from gui.lang.i18n import _
 
-    }
-}
 
 
 class Footer(QWidget):
-    button_details = [
-        {'label': 'Cancel', 'type': 'CLOSE', 'group': 'config'},
-        {'label': 'Start', 'type': 'START', 'group': 'config'},
-        {'label': 'Stop', 'type': 'STOP', 'group': 'running'},
-        {'label': 'Edit', 'type': 'EDIT', 'group': 'complete'},
-        {'label': 'Restart', 'type': 'RESTART', 'group': 'complete'},
-        {'label': 'Quit', 'type': 'QUIT', 'group': 'complete'},
-    ]
-
-    groups = {
-        'config': 0,
-        'running': 1,
-        'complete': 2
-    }
 
     def __init__(self, parent, *args, **kwargs):
         super(Footer, self).__init__(parent, *args, **kwargs)
@@ -50,7 +31,7 @@ class Footer(QWidget):
             self.buttons.on_next({'type': action})
 
         buttonStack = QStackedWidget()
-        groups = groupby(self.button_details, itemgetter('group'))
+        groups = groupby(self.buttonDetails(), itemgetter('group'))
         for group, details in groups:
             q = QWidget()
             layout = QHBoxLayout()
@@ -77,3 +58,13 @@ class Footer(QWidget):
 
     def setVisibleGroup(self, group):
         self.buttonStack.setCurrentIndex(group)
+
+    def buttonDetails(self):
+        return [
+            {'label': _('cancel'), 'type': 'CLOSE', 'group': 'config'},
+            {'label': _('start'), 'type': 'START', 'group': 'config'},
+            {'label': _('stop'), 'type': 'STOP', 'group': 'running'},
+            {'label': _('edit'), 'type': 'EDIT', 'group': 'complete'},
+            {'label': _('restart'), 'type': 'RESTART', 'group': 'complete'},
+            {'label': _('close'), 'type': 'QUIT', 'group': 'complete'},
+        ]

@@ -1,5 +1,5 @@
 {
-  "language_dir": "/Users/ckiehl/Documents/Gooey/gooey/languages",
+  "language_dir": "F:/Dropbox/pretty_gui/Gooey/gooey/languages",
   "auto_start": false,
   "progress_expr": null,
   "target": "\"F:/Dropbox/pretty_gui/Gooey/venv/Scripts/python.exe\" -u \"F:/Dropbox/pretty_gui/Gooey/gooey/new_hotness/cool_program.py\"",

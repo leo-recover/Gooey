@@ -6,21 +6,25 @@ from PyQt5.QtWidgets import QWidget
 from new_hotness.components.general import line
 from new_hotness.util import chunk
 
+from gui.lang.i18n import _
+
 
 class ConfigPanel(QScrollArea):
     def __init__(self, store, required, optional, *args, **kwargs):
+
         super(ConfigPanel, self).__init__(*args, **kwargs)
         self.setFrameShape(QFrame.NoFrame)
         self.layoutComponent(required, optional)
 
     def layoutComponent(self, required, optional):
+
         layout = QVBoxLayout()
 
         if required:
-            self.buildSection(layout, 'Required Arguments', 10, required)
+            self.buildSection(layout, _('required_args_msg'), 10, required)
 
         if optional:
-            self.buildSection(layout, 'Optional Arguments', 15, optional)
+            self.buildSection(layout, _('optional_args_msg'), 15, optional)
  
         w = QWidget(self)
         w.setContentsMargins(0, 0, 0, 0)

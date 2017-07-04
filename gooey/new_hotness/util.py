@@ -3,7 +3,7 @@ from functools import partial, reduce
 from itertools import zip_longest
 
 
-def simpleCurry(f):
+def bootlegCurry(f):
     def _curry(f, remaining):
         def inner(*args):
             if len(args) >= remaining:
@@ -31,7 +31,7 @@ def isRequiredNonPositional(widget):
     return isRequired(widget) and not widget['data']['commands']
 
 
-@simpleCurry
+@bootlegCurry
 def belongsTo(parent, widget):
     return widget['parent'] == parent
 
@@ -60,6 +60,6 @@ def chunk(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
     return zip_longest(fillvalue=fillvalue, *args)
 
-@simpleCurry
+@bootlegCurry
 def nestedget(path, obj):
     return reduce(lambda acc, val: acc.get(val, {}), path, obj)

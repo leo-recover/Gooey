@@ -20,8 +20,9 @@ class ConsolePanel(QWidget):
         layout.addWidget(self.widget, stretch=1)
         self.setLayout(layout)
 
-    def receiveChanges(self):
-        pass
 
-    def dispatchChanges(self):
-        pass
+    def writeLine(self, line):
+        self.widget.append(line)
+        c = self.widget.textCursor()
+        c.movePosition(c.End)
+        self.widget.setTextCursor(c)

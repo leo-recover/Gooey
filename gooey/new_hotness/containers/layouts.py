@@ -37,14 +37,12 @@ class SplitLayout(QWidget):
         self.right = right
         self.layoutComponent()
 
-
     def layoutComponent(self):
         layout = QHBoxLayout()
         layout.addWidget(self.left, 0)
         layout.addWidget(self.line)
         layout.addWidget(self.right, 1)
         self.setLayout(layout)
-
 
     def withMaxSize(self, widget, maxSize):
         '''

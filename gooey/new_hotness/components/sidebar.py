@@ -25,7 +25,6 @@ class Sidebar(QWidget):
         layout.addWidget(self.widget, stretch=1)
         self.setLayout(layout)
 
-
     def dispatchChanges(self, currentRow):
         self.value.on_next({
             'type': 'SELECTION_CHANGE',

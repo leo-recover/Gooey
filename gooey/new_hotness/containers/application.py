@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtWidgets import QStackedWidget
 
@@ -13,6 +14,8 @@ from new_hotness.commandline import build_cmd_str
 from new_hotness.components.sidebar import Sidebar
 from new_hotness.util import isRequired, isOptional, belongsTo, flatten, forEvent
 from new_hotness.util import nestedget
+
+from gui.lang.i18n import _
 
 
 class MainWindow(QMainWindow):
@@ -118,8 +121,9 @@ class MainWindow(QMainWindow):
         activeWidgets = list(filter(belongsTo(activeGroup), self._state['widgets'].values()))
         # if not self.hasRequiredArgs(activeWidgets):
         #     self.launchDialog(
-        #         "Required Arguments",
-        #         "Please supply values for all required arguments "
+        #         'warning',
+        #         _('error_title'),
+        #         _('error_required_fields')
         #     )
         #     return
 
@@ -138,25 +142,20 @@ class MainWindow(QMainWindow):
         )
 
 
-
     def doThing(self, event):
         if event.get('completed'):
             self.doOtherThing()
-            return
-        try:
-            self.console.widget.append(event.get('console_update').decode('utf-8'))
-            c = self.console.widget.textCursor()
-            c.movePosition(c.End)
-            self.console.widget.setTextCursor(c)
-        except Exception as e:
-            print(e)
+        else:
+            self.console.writeLine(event.get('console_update').decode('utf-8'))
 
 
     def doOtherThing(self):
         if self.clientRunner.was_success():
             self.do3()
+            QTimer().singleShot(0, self.successDialog)
         else:
             self.do4()
+            QTimer().singleShot(0, self.runtimeErrorDialog)
 
 
     def hasRequiredArgs(self, widgets):
@@ -178,16 +177,29 @@ class MainWindow(QMainWindow):
 
 
     def handleRestart(self, action):
-        print('Handling restart')
         self.handleStart(action)
 
 
     def handleEdit(self, action):
         self.do1()
 
-    def launchDialog(self, title, body):
-        QMessageBox.warning(
-            self, title, body, QMessageBox.Ok, QMessageBox.NoButton
+    def launchDialog(self, boxtype, title, body):
+        def launchDialog():
+            getattr(QMessageBox, boxtype)(
+                self, title, body, QMessageBox.Ok, QMessageBox.NoButton
+            )
+        QTimer().singleShot(0, launchDialog)
+
+
+    def successDialog(self):
+        self.launchDialog(
+            'information', _('execution_finished'), _('success_message')
+        )
+
+
+    def runtimeErrorDialog(self):
+        self.launchDialog(
+            'critical', _('error_title'), _('uh_oh')
         )
 
 
@@ -200,16 +212,16 @@ class MainWindow(QMainWindow):
 
     def confirmStop(self):
         return self.launchConfirmDialog(
-            'Are you sure you want to stop?',
-            'Do it?'
+            _('stop_task'),
+            _('sure_you_want_to_stop')
         )
 
 
     def do1(self):
         self._state['gooey_state'] = {
             'icon': image_repository.config_icon,
-            'title': 'Settings',
-            'subtitle': 'Example program demonstrating things',
+            'title': _('settings_title'),
+            'subtitle': self._state['program_description'],
             'window': 0,
             'buttonGroup': 0
         }
@@ -217,8 +229,8 @@ class MainWindow(QMainWindow):
     def do2(self):
         self._state['gooey_state'] = {
             'icon': image_repository.running_icon,
-            'title': 'Running',
-            'subtitle': 'Please wait',
+            'title': _('running_title'),
+            'subtitle': _('running_msg'),
             'window': 1,
             'buttonGroup': 1
         }
@@ -226,8 +238,8 @@ class MainWindow(QMainWindow):
     def do3(self):
         self._state['gooey_state'] = {
             'icon': image_repository.success_icon,
-            'title': 'Success',
-            'subtitle': 'Program is now complete',
+            'title': _('finished_title'),
+            'subtitle': _('finished_msg'),
             'window': 1,
             'buttonGroup': 2
         }
@@ -235,8 +247,8 @@ class MainWindow(QMainWindow):
     def do4(self):
         self._state['gooey_state'] = {
             'icon': image_repository.error_icon,
-            'title': 'Error',
-            'subtitle': 'An error occurred while running',
+            'title':  _('finished_title'),
+            'subtitle': _('finished_error'),
             'window': 1,
             'buttonGroup': 2
         }

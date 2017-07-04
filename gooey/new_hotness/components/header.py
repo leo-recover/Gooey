@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout
 
 class Header(QFrame):
 
+
     def __init__(self, parent, *args, **kwargs):
         super(Header, self).__init__(parent, *args, **kwargs)
 
@@ -44,9 +45,6 @@ class Header(QFrame):
         self.subtitle.setText(value)
 
     def setIcon(self, iconPath):
-
         self.icon.load(os.path.join(os.getcwd(), iconPath))
-
         self.icon = self.icon.scaled(131, 79, QtCore.Qt.KeepAspectRatio, 1)
-        print('Alpha as fuck:', self.icon.hasAlpha())
         self.iconLabel.setPixmap(self.icon)

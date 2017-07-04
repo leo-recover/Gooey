@@ -6,9 +6,9 @@ from uuid import uuid4
 from PyQt5.QtWidgets import QApplication
 
 from copy import deepcopy
-from gooey.new_hotness.containers.application import MainWindow
-from gooey.new_hotness.functional import assign
 from rx.subjects import Subject
+
+from gui.lang import i18n
 
 
 def app_reducer(state, action):
@@ -100,6 +100,11 @@ sys.excepthook = my_exception_hook
 
 
 state = StateContainer(load_initial_state())
+
+i18n.load(state['language_dir'], state['language'])
+
+from gooey.new_hotness.containers.application import MainWindow
+
 app = QApplication(sys.argv)
 form = MainWindow(state)
 
