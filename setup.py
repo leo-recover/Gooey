@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme:
     long_description = readme.read()
 
-version = __import__('gooey').__version__
+version = '2.0'
 
 setup(
     name='Gooey',
