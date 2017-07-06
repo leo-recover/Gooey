@@ -1,155 +1,140 @@
 {
-  "language_dir": "/Users/ckiehl/Documents/Gooey/gooey/languages",
   "auto_start": false,
-  "progress_expr": null,
-  "target": "'/Users/ckiehl/Documents/Gooey/venv/bin/python' -u '/Users/ckiehl/Documents/Gooey/gooey/examples/demo.py'",
+  "default_size": [
+    610,
+    530
+  ],
+  "num_required_cols": 1,
+  "layout_type": "standard",
+  "progress_regex": null,
   "num_optional_cols": 2,
+  "disable_stop_button": false,
+  "language": "english",
+  "disable_progress_bar_animation": false,
+  "monospace_display": false,
   "widgets": {
     "primary": {
-      "command": null,
       "contents": [
         {
+          "required": true,
+          "type": "FileChooser",
           "data": {
-            "default": null,
             "help": "Name of the file you want to process",
-            "nargs": "",
-            "display_name": "FileChooser",
+            "default": null,
+            "choices": [],
             "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "FileChooser"
+            "nargs": "",
+            "display_name": "FileChooser"
+          }
         },
         {
+          "required": true,
+          "type": "DirChooser",
           "data": {
-            "default": null,
             "help": "Name of the file you want to process",
-            "nargs": "",
-            "display_name": "DirectoryChooser",
-            "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "DirChooser"
-        },
-        {
-          "data": {
             "default": null,
-            "help": "Name of the file you want to process",
-            "nargs": "",
-            "display_name": "FileSaver",
+            "choices": [],
             "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "FileSaver"
+            "nargs": "",
+            "display_name": "DirectoryChooser"
+          }
         },
         {
+          "required": false,
+          "type": "MultiFileChooser",
           "data": {
+            "help": "ooop",
             "default": null,
-            "help": "Name of the file you want to process",
+            "choices": [],
+            "commands": [
+              "-j",
+              "--jaws"
+            ],
             "nargs": "",
-            "display_name": "MultiFileSaver",
-            "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "MultiFileChooser"
+            "display_name": "jaws"
+          }
         },
         {
+          "required": false,
+          "type": "TextField",
           "data": {
-            "default": null,
-            "help": "Name of the file you want to process",
-            "nargs": "",
-            "display_name": "MultiDirChooser",
-            "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "MultiDirChooser"
-        },
-        {
-          "data": {
-            "default": null,
-            "help": "Directory to store output",
-            "nargs": "",
-            "display_name": "directory",
-            "commands": [],
-            "choices": []
-          },
-          "required": true,
-          "type": "TextField"
-        },
-        {
-          "data": {
-            "default": 2,
             "help": "Duration (in seconds) of the program output",
-            "nargs": "",
-            "display_name": "duration",
+            "default": 2,
+            "choices": [],
             "commands": [
               "-d",
               "--duration"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "TextField"
+            "nargs": "",
+            "display_name": "duration"
+          }
         },
         {
+          "required": false,
+          "type": "Textarea",
           "data": {
-            "default": null,
-            "help": "datetime when the cron should begin",
+            "help": "A multiline textarea",
+            "default": "I'm on \na new line",
+            "choices": [],
+            "commands": [
+              "-u",
+              "--textarea"
+            ],
             "nargs": "",
-            "display_name": "cron_schedule",
+            "display_name": "textarea"
+          }
+        },
+        {
+          "required": false,
+          "type": "DateChooser",
+          "data": {
+            "help": "datetime when the cron should begin",
+            "default": null,
+            "choices": [],
             "commands": [
               "-s",
               "--cron-schedule"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "DateChooser"
+            "nargs": "",
+            "display_name": "cron_schedule"
+          }
         },
         {
+          "required": false,
+          "type": "CheckBox",
           "data": {
-            "default": false,
             "help": "display the countdown timer",
-            "nargs": "",
-            "display_name": "showtime",
+            "default": false,
+            "choices": [],
             "commands": [
               "-c",
               "--showtime"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "CheckBox"
+            "nargs": "",
+            "display_name": "showtime"
+          }
         },
         {
+          "required": false,
+          "type": "CheckBox",
           "data": {
-            "default": false,
             "help": "Pause execution",
-            "nargs": "",
-            "display_name": "pause",
+            "default": false,
+            "choices": [],
             "commands": [
               "-p",
               "--pause"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "CheckBox"
+            "nargs": "",
+            "display_name": "pause"
+          }
         },
         {
+          "required": false,
+          "type": "Counter",
           "data": {
-            "default": null,
             "help": null,
-            "nargs": "",
-            "display_name": "verbose",
-            "commands": [
-              "-v",
-              "--verbose"
-            ],
+            "default": null,
             "choices": [
               "1",
               "2",
@@ -161,119 +146,116 @@
               "8",
               "9",
               "10"
-            ]
-          },
-          "required": false,
-          "type": "Counter"
+            ],
+            "commands": [
+              "-v",
+              "--verbose"
+            ],
+            "nargs": "",
+            "display_name": "verbose"
+          }
         },
         {
+          "required": false,
+          "type": "CheckBox",
           "data": {
-            "default": false,
             "help": "Overwrite output file (if present)",
-            "nargs": "",
-            "display_name": "overwrite",
+            "default": true,
+            "choices": [],
             "commands": [
               "-o",
               "--overwrite"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "CheckBox"
+            "nargs": "",
+            "display_name": "overwrite"
+          }
         },
         {
+          "required": false,
+          "type": "Dropdown",
           "data": {
-            "default": null,
             "help": "Recurse into subfolders",
-            "nargs": "",
-            "display_name": "recursive",
+            "default": null,
+            "choices": [
+              "yes",
+              "no"
+            ],
             "commands": [
               "-r",
               "--recursive"
             ],
-            "choices": [
-              "yes",
-              "no"
-            ]
-          },
-          "required": false,
-          "type": "Dropdown"
+            "nargs": "",
+            "display_name": "recursive"
+          }
         },
         {
+          "required": false,
+          "type": "TextField",
           "data": {
-            "default": "writelogs",
             "help": "Dump output to local file",
-            "nargs": "",
-            "display_name": "writelog",
+            "default": "writelogs",
+            "choices": [],
             "commands": [
               "-w",
               "--writelog"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "TextField"
+            "nargs": "",
+            "display_name": "writelog"
+          }
         },
         {
+          "required": false,
+          "type": "CheckBox",
           "data": {
-            "default": false,
             "help": "Stop process on error (default: No)",
-            "nargs": "",
-            "display_name": "error",
+            "default": false,
+            "choices": [],
             "commands": [
               "-e",
               "--error"
             ],
-            "choices": []
-          },
-          "required": false,
-          "type": "CheckBox"
+            "nargs": "",
+            "display_name": "error"
+          }
         },
         {
           "required": false,
+          "type": "RadioGroup",
           "data": [
             {
-              "nargs": "",
-              "display_name": "verbose",
-              "help": "Show more details",
               "commands": [
                 "-t",
                 "--verbozze"
               ],
-              "choices": null
+              "help": "Show more details",
+              "nargs": "",
+              "choices": null,
+              "display_name": "verbose"
             },
             {
-              "nargs": "",
-              "display_name": "quiet",
-              "help": "Only output on error",
               "commands": [
                 "-q",
                 "--quiet"
               ],
-              "choices": null
+              "help": "Only output on error",
+              "nargs": "",
+              "choices": null,
+              "display_name": "quiet"
             }
           ],
-          "group_name": "Choose Option",
-          "type": "RadioGroup"
+          "group_name": "Choose Option"
         }
-      ]
+      ],
+      "command": null
     }
   },
-  "disable_progress_bar_animation": false,
-  "layout_type": "standard",
+  "progress_expr": null,
+  "target": "\"F:\\Dropbox\\pretty_gui\\Gooey\\venv\\Scripts\\python.exe\" -u \"F:/Dropbox/pretty_gui/Gooey/gooey/examples/widget_demo.py\"",
+  "image_dir": "default",
   "program_name": "Widget Demo",
   "show_advanced": true,
   "manual_start": false,
-  "image_dir": "default",
-  "progress_regex": null,
-  "group_by_type": true,
-  "num_required_cols": 2,
-  "language": "english",
-  "monospace_display": false,
-  "disable_stop_button": false,
-  "program_description": "Example application to show Gooey's various widgets",
-  "default_size": [
-    610,
-    530
-  ]
+  "language_dir": "F:\\Dropbox\\pretty_gui\\Gooey\\gooey\\languages",
+  "group_by_type": false,
+  "program_description": "Example application to show Gooey's various widgets BROOOOO"
 }
