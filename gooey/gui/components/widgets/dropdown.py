@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtWidgets import QHBoxLayout
 
-from gooey.new_hotness.components.widgets.bases import TextContainer
-from gooey.new_hotness import formatters
+from gooey.gui.components.widgets.bases import TextContainer
+from gooey.gui import formatters
 
 class Dropdown(TextContainer):
     widget_class = QComboBox

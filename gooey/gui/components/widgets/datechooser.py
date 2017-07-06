@@ -1,5 +1,5 @@
-from gooey.new_hotness.components.widgets.chooser import Chooser
-from gooey.new_hotness.components.widgets.date_dialog import DateDialog
+from gooey.gui.components.widgets.chooser import Chooser
+from gooey.gui.components.widgets.date_dialog import DateDialog
 
 
 class DateChooser(Chooser):

@@ -18,7 +18,7 @@
 #
 # from copy import deepcopy
 # from functools import reduce
-# from gooey.new_hotness.date_dialog import DateDialog
+# from gooey.gui.date_dialog import DateDialog
 # from pydux import create_store, combine_reducers
 #
 # from rx.subjects import Subject

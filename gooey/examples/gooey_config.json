@@ -1,139 +1,131 @@
 {
-  "auto_start": false,
-  "default_size": [
-    610,
-    530
-  ],
-  "num_required_cols": 1,
-  "layout_type": "standard",
-  "progress_regex": null,
   "num_optional_cols": 2,
-  "disable_stop_button": false,
-  "language": "english",
   "disable_progress_bar_animation": false,
+  "program_name": "Widget Demo",
   "monospace_display": false,
+  "language_dir": "F:\\Dropbox\\pretty_gui\\Gooey\\gooey\\languages",
+  "auto_start": false,
+  "target": "\"F:\\Dropbox\\pretty_gui\\Gooey\\venv\\Scripts\\python.exe\" -u \"F:/Dropbox/pretty_gui/Gooey/gooey/examples/widget_demo.py\"",
   "widgets": {
     "primary": {
+      "command": null,
       "contents": [
         {
-          "required": true,
-          "type": "FileChooser",
           "data": {
-            "help": "Name of the file you want to process",
             "default": null,
             "choices": [],
-            "commands": [],
             "nargs": "",
+            "commands": [],
+            "help": "Name of the file you want to process",
             "display_name": "FileChooser"
-          }
+          },
+          "type": "FileChooser",
+          "required": true
         },
         {
-          "required": true,
-          "type": "DirChooser",
           "data": {
-            "help": "Name of the file you want to process",
             "default": null,
             "choices": [],
-            "commands": [],
             "nargs": "",
+            "commands": [],
+            "help": "Name of the file you want to process",
             "display_name": "DirectoryChooser"
-          }
+          },
+          "type": "DirChooser",
+          "required": true
         },
         {
-          "required": false,
-          "type": "MultiFileChooser",
           "data": {
-            "help": "ooop",
             "default": null,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-j",
               "--jaws"
             ],
-            "nargs": "",
+            "help": "ooop",
             "display_name": "jaws"
-          }
+          },
+          "type": "MultiFileChooser",
+          "required": false
         },
         {
-          "required": false,
-          "type": "TextField",
           "data": {
-            "help": "Duration (in seconds) of the program output",
             "default": 2,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-d",
               "--duration"
             ],
-            "nargs": "",
+            "help": "Duration (in seconds) of the program output",
             "display_name": "duration"
-          }
+          },
+          "type": "TextField",
+          "required": false
         },
         {
-          "required": false,
-          "type": "Textarea",
           "data": {
-            "help": "A multiline textarea",
             "default": "I'm on \na new line",
             "choices": [],
+            "nargs": "",
             "commands": [
               "-u",
               "--textarea"
             ],
-            "nargs": "",
+            "help": "A multiline textarea",
             "display_name": "textarea"
-          }
+          },
+          "type": "Textarea",
+          "required": false
         },
         {
-          "required": false,
-          "type": "DateChooser",
           "data": {
-            "help": "datetime when the cron should begin",
             "default": null,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-s",
               "--cron-schedule"
             ],
-            "nargs": "",
+            "help": "datetime when the cron should begin",
             "display_name": "cron_schedule"
-          }
+          },
+          "type": "DateChooser",
+          "required": false
         },
         {
-          "required": false,
-          "type": "CheckBox",
           "data": {
-            "help": "display the countdown timer",
             "default": false,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-c",
               "--showtime"
             ],
-            "nargs": "",
+            "help": "display the countdown timer",
             "display_name": "showtime"
-          }
+          },
+          "type": "CheckBox",
+          "required": false
         },
         {
-          "required": false,
-          "type": "CheckBox",
           "data": {
-            "help": "Pause execution",
             "default": false,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-p",
               "--pause"
             ],
-            "nargs": "",
+            "help": "Pause execution",
             "display_name": "pause"
-          }
+          },
+          "type": "CheckBox",
+          "required": false
         },
         {
-          "required": false,
-          "type": "Counter",
           "data": {
-            "help": null,
             "default": null,
             "choices": [
               "1",
@@ -147,115 +139,123 @@
               "9",
               "10"
             ],
+            "nargs": "",
             "commands": [
               "-v",
               "--verbose"
             ],
-            "nargs": "",
+            "help": null,
             "display_name": "verbose"
-          }
+          },
+          "type": "Counter",
+          "required": false
         },
         {
-          "required": false,
-          "type": "CheckBox",
           "data": {
-            "help": "Overwrite output file (if present)",
             "default": true,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-o",
               "--overwrite"
             ],
-            "nargs": "",
+            "help": "Overwrite output file (if present)",
             "display_name": "overwrite"
-          }
+          },
+          "type": "CheckBox",
+          "required": false
         },
         {
-          "required": false,
-          "type": "Dropdown",
           "data": {
-            "help": "Recurse into subfolders",
             "default": null,
             "choices": [
               "yes",
               "no"
             ],
+            "nargs": "",
             "commands": [
               "-r",
               "--recursive"
             ],
-            "nargs": "",
+            "help": "Recurse into subfolders",
             "display_name": "recursive"
-          }
+          },
+          "type": "Dropdown",
+          "required": false
         },
         {
-          "required": false,
-          "type": "TextField",
           "data": {
-            "help": "Dump output to local file",
             "default": "writelogs",
             "choices": [],
+            "nargs": "",
             "commands": [
               "-w",
               "--writelog"
             ],
-            "nargs": "",
+            "help": "Dump output to local file",
             "display_name": "writelog"
-          }
+          },
+          "type": "TextField",
+          "required": false
         },
         {
-          "required": false,
-          "type": "CheckBox",
           "data": {
-            "help": "Stop process on error (default: No)",
             "default": false,
             "choices": [],
+            "nargs": "",
             "commands": [
               "-e",
               "--error"
             ],
-            "nargs": "",
+            "help": "Stop process on error (default: No)",
             "display_name": "error"
-          }
+          },
+          "type": "CheckBox",
+          "required": false
         },
         {
-          "required": false,
-          "type": "RadioGroup",
           "data": [
             {
+              "help": "Show more details",
+              "nargs": "",
               "commands": [
                 "-t",
                 "--verbozze"
               ],
-              "help": "Show more details",
-              "nargs": "",
               "choices": null,
               "display_name": "verbose"
             },
             {
+              "help": "Only output on error",
+              "nargs": "",
               "commands": [
                 "-q",
                 "--quiet"
               ],
-              "help": "Only output on error",
-              "nargs": "",
               "choices": null,
               "display_name": "quiet"
             }
           ],
-          "group_name": "Choose Option"
+          "type": "RadioGroup",
+          "group_name": "Choose Option",
+          "required": false
         }
-      ],
-      "command": null
+      ]
     }
   },
-  "progress_expr": null,
-  "target": "\"F:\\Dropbox\\pretty_gui\\Gooey\\venv\\Scripts\\python.exe\" -u \"F:/Dropbox/pretty_gui/Gooey/gooey/examples/widget_demo.py\"",
+  "default_size": [
+    610,
+    530
+  ],
+  "layout_type": "standard",
+  "progress_regex": null,
+  "num_required_cols": 1,
   "image_dir": "default",
-  "program_name": "Widget Demo",
   "show_advanced": true,
+  "disable_stop_button": false,
+  "program_description": "Example application to show Gooey's various widgets BROOOOO",
   "manual_start": false,
-  "language_dir": "F:\\Dropbox\\pretty_gui\\Gooey\\gooey\\languages",
-  "group_by_type": false,
-  "program_description": "Example application to show Gooey's various widgets BROOOOO"
+  "progress_expr": null,
+  "language": "english",
+  "group_by_type": false
 }

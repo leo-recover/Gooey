@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QFileDialog
 
-from gooey.new_hotness.components.widgets.chooser import Chooser
+from gooey.gui.components.widgets.chooser import Chooser
 
 
 class DirectoryChooser(Chooser):
@@ -9,4 +9,3 @@ class DirectoryChooser(Chooser):
     def processResult(self, result):
         return result
 
-    

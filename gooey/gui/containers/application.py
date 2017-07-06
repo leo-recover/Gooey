@@ -2,20 +2,20 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtWidgets import QStackedWidget
 
-import gooey.new_hotness.components.widgets as gooey_widgets
+import gooey.gui.components.widgets as gooey_widgets
 from gooey.gui.processor import ProcessController
-from gooey.new_hotness.components.config_panel import ConfigPanel
-from gooey.new_hotness.components.console_panel import ConsolePanel
-from gooey.new_hotness.components.footer import Footer
-from gooey.new_hotness.components.header import Header
-from gooey.new_hotness.containers.layouts import StockLayout, SplitLayout
-from gui import image_repository
-from new_hotness.commandline import build_cmd_str
-from new_hotness.components.sidebar import Sidebar
-from new_hotness.util import isRequired, isOptional, belongsTo, flatten, forEvent
-from new_hotness.util import nestedget
+from gooey.gui.components.config_panel import ConfigPanel
+from gooey.gui.components.console_panel import ConsolePanel
+from gooey.gui.components.footer import Footer
+from gooey.gui.components.header import Header
+from gooey.gui.containers.layouts import StockLayout, SplitLayout
+from gooey.gui import image_repository
+from gooey.gui.commandline import build_cmd_str
+from gooey.gui.components.sidebar import Sidebar
+from gooey.gui.util import isRequired, isOptional, belongsTo, flatten, forEvent
+from gooey.gui.util import nestedget
 
-from gui.lang.i18n import _
+from gooey.gui.lang.i18n import _
 
 
 class MainWindow(QMainWindow):

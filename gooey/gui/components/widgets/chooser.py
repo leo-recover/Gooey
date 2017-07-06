@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QPushButton
 
-from gooey.new_hotness.components.widgets.textfield import TextField
-from gooey.new_hotness import formatters
+from gooey.gui.components.widgets.textfield import TextField
+from gooey.gui import formatters
 
 
 # TODO: unify all of the return types Qt throws out

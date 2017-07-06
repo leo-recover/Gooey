@@ -1,5 +1,5 @@
-from gooey.new_hotness.components.widgets.textfield import TextField
-from gooey.new_hotness import formatters
+from gooey.gooey.gui.components.widgets.textfield import TextField
+from gooey.gooey.gui import formatters
 
 class Counter(TextField):
 

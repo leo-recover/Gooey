@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import QScrollArea
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QWidget
 
-from new_hotness.components.general import line
-from new_hotness.util import chunk
+from gooey.gui.components.general import line
+from gooey.gui.util import chunk
 
-from gui.lang.i18n import _
+from gooey.gui.lang.i18n import _
 
 
 class ConfigPanel(QScrollArea):

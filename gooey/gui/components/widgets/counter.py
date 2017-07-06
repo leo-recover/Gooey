@@ -1,5 +1,5 @@
-from gooey.new_hotness.components.widgets.dropdown import Dropdown
-from gooey.new_hotness import formatters
+from gooey.gui.components.widgets.dropdown import Dropdown
+from gooey.gui import formatters
 
 class Counter(Dropdown):
 

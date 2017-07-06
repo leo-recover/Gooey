@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFileDialog
 
-from gooey.new_hotness.components.widgets.chooser import Chooser
-from gooey.new_hotness import formatters
+from gooey.gui.components.widgets.chooser import Chooser
+from gooey.gui import formatters
 
 class MultiFileChooser(Chooser):
     launchDialog = QFileDialog.getOpenFileNames

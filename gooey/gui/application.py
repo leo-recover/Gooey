@@ -11,8 +11,8 @@ from PyQt5.QtWidgets import QApplication
 
 from copy import deepcopy
 
-from gui.lang import i18n
-from gui.state import StateContainer
+from gooey.gui.lang import i18n
+from gooey.gui.state import StateContainer
 
 
 def gooey1to2(buildspec):

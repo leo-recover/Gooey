@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QFrame
 from PyQt5.QtWidgets import QWidget
 
-from new_hotness.components.general import line, withMaxSize
+from gooey.gui.components.general import line, withMaxSize
 
 
 class SplitLayout(QWidget):

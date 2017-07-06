@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QCheckBox
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QVBoxLayout
 
-from gooey.new_hotness.components.widgets.bases import BaseWidget
-from gooey.new_hotness import formatters
+from gooey.gui.components.widgets.bases import BaseWidget
+from gooey.gui import formatters
 from rx.subjects import Subject
 
 

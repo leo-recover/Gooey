@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTextEdit
 
-from gooey.new_hotness.components.widgets.textfield import TextField
+from gooey.gui.components.widgets.textfield import TextField
 
 
 class Textarea(TextField):

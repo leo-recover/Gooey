@@ -2,8 +2,8 @@
 from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLineEdit
 
-from gooey.new_hotness.components.widgets.bases import TextContainer
-from gooey.new_hotness import formatters
+from gooey.gui.components.widgets.bases import TextContainer
+from gooey.gui import formatters
 
 
 class TextField(TextContainer):

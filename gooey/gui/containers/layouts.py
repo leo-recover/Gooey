@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QFrame, QWidget, QHBoxLayout
 from PyQt5.QtWidgets import QVBoxLayout
-from new_hotness.components.general import line
+from gooey.gui.components.general import line
 
 
 

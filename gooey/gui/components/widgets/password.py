@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QLineEdit
 
-from gooey.new_hotness.components.widgets import TextField
+from gooey.gui.components.widgets import TextField
 
 
 class PasswordField(TextField):

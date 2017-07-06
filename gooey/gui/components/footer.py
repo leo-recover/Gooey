@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QWidget
 from rx.subjects.subject import Subject
 
-from gui.lang.i18n import _
+from gooey.gui.lang.i18n import _
 
 
 
